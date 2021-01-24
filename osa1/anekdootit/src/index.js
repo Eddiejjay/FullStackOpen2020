@@ -1,18 +1,9 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const MostVotes = (props) => {
-
-  let anecdoteIndex = props.votes.indexOf(Math.max(...props.votes));
-  let anecdote = props.anecdotes[anecdoteIndex]
-  console.log(anecdoteIndex, 'and', anecdote)
-
-  return(
-    <p> eniten ääniä  sai {anecdote} </p>
-  )
 
 
-}
+
 
 const Button = (props) => {
 
