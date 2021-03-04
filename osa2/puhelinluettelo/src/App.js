@@ -4,7 +4,17 @@ import axios from 'axios'
 import bookservice from './service/bookservice'
 
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
 
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
 
 
 
@@ -68,26 +78,46 @@ const AddPerson = (props) => {
 
     
     if (personX!= undefined){
-    window.confirm(`${props.newName} is already added to phonebook, replace the old number with a new one?`)?
-   
-   bookservice
-   .redo(personX.id,changedPerson)
-      .then(returnedPerson => { props.setPersons(props.persons.map(person=> person.id !== returnedPerson.id?person:returnedPerson))})
+    window.confirm(`${props.newName} is already added to phonebook, replace the old number with a new one?`)
+   ?
   
-    :
-    props.setNewName('')
+   bookservice
+    .redo(personX.id,changedPerson)
+      .then(returnedPerson => { props.setPersons(props.persons.map(person=> person.id !== returnedPerson.id?person:returnedPerson))}, props.setNewName('') ,  props.setMessage(
+        `Changed number ${person.name}`
+      )
+      ,setTimeout(() => {
+        props.setMessage(null)
+      }, 3000))
+      .catch(error => { props.setMessage(`Information of ${person.name} has already been removed from server`)} , setTimeout(() => {
+        props.setMessage(null)
+      }, 3000))
+      
+    
+  :props.setNewName('')
     props.setNewNumber('')
+  
     }else {
+      
       bookservice
       .create(person)
       .then(newPerson => {
         props.setPersons(props.persons.concat(newPerson))
       })
      props.setPersons(props.persons.concat(person))
+
      props.setNewName('')
      props.setNewNumber('')
+    
+     props.setMessage(
+      `Added ${person.name}`
+    )
+    setTimeout(() => {
+      props.setMessage(null)
+    }, 3000)
 
-    console.log('button clicked', event.target)
+
+
   }}
 
 return (
@@ -127,6 +157,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [searchText, setSearchText] = useState('')
+  const [message, setMessage] = useState(null)
 
 useEffect(() => {
 console.log('efekti alkaa')
@@ -161,7 +192,14 @@ bookservice
     bookservice
     .remove(id)
     setPersons(persons.filter(person => person.id !== id))
-   console.log(id) }
+   console.log(id) 
+  setMessage(`Deleted ${name}`)
+  setTimeout(() => {
+    setMessage(null)
+  }, 3000)
+  
+  
+  }
 
      else {
     return
@@ -176,18 +214,13 @@ bookservice
 else {
   console.log('jee')} 
 
-
-
-
   }
-
-
 
 
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={message} />
 
       <Filter searchText = {searchText} handleSearchTextChange = {handleSearchTextChange}/>
 
@@ -201,6 +234,8 @@ else {
         setPersons = {setPersons} 
         searchText = {searchText}
         checkNameBook = {checkNameBook}
+        setMessage = {setMessage}
+        message = {message}
        />
         
       <h2>Numbers</h2>
