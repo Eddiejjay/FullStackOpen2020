@@ -6,15 +6,24 @@ import bookservice from './service/bookservice'
 
 const Notification = ({ message }) => {
   if (message === null) {
-    return null
+      return null
   }
-
   return (
-    <div className="error">
-      {message}
-    </div>
+      <div className="message">{message}</div>
   )
 }
+
+
+
+const ErrorNotification = ({ errorMessage}) => {
+  if (errorMessage === null) {
+      return null
+  }
+  return (
+      <div className="error">{errorMessage}</div>
+  )
+}
+
 
 
 
@@ -77,25 +86,34 @@ const AddPerson = (props) => {
     let changedPerson = {...personX, number:props.newNumber}
 
     
-    if (personX!= undefined){
-    window.confirm(`${props.newName} is already added to phonebook, replace the old number with a new one?`)
-   ?
-  
-   bookservice
+    if (props.persons.find(person => person.name === props.newName)){
+      if(window.confirm(`${props.newName} is already added to phonebook, replace the old number with a new one?`)){
+    
+    bookservice
     .redo(personX.id,changedPerson)
-      .then(returnedPerson => { props.setPersons(props.persons.map(person=> person.id !== returnedPerson.id?person:returnedPerson))}, props.setNewName('') ,  props.setMessage(
+      .then(returnedPerson => {
+        props.setPersons(props.persons.map(person=> person.id !== returnedPerson.id?person:returnedPerson))
+        props.setNewName('') 
+        props.setNewNumber('')
+        props.setMessage(
         `Changed number ${person.name}`
       )
-      ,setTimeout(() => {
+      setTimeout(() => {
         props.setMessage(null)
-      }, 3000))
-      .catch(error => { props.setMessage(`Information of ${person.name} has already been removed from server`)} , setTimeout(() => {
-        props.setMessage(null)
-      }, 3000))
+      }, 3000)
+    })
+      .catch(error => { 
+        props.setErrorMessage(
+          `Information of ${person.name} has already been removed from server`
+          ) 
+           setTimeout(() => {
+        props.setErrorMessage(null)
+      }, 3000)
+    })
+  }
       
-    
-  :props.setNewName('')
-    props.setNewNumber('')
+  props.setNewName('')
+  props.setNewNumber('')
   
     }else {
       
@@ -158,6 +176,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [searchText, setSearchText] = useState('')
   const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
 useEffect(() => {
 console.log('efekti alkaa')
@@ -220,7 +239,8 @@ else {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message}/>
+      <ErrorNotification  errorMessage={errorMessage}/>
 
       <Filter searchText = {searchText} handleSearchTextChange = {handleSearchTextChange}/>
 
@@ -236,6 +256,8 @@ else {
         checkNameBook = {checkNameBook}
         setMessage = {setMessage}
         message = {message}
+        setErrorMessage = {setErrorMessage}
+        errorMessage = {errorMessage}
        />
         
       <h2>Numbers</h2>
