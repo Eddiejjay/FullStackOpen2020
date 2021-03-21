@@ -13,12 +13,18 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    
+
+
+
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json"
   },
+
+
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -39,5 +45,6 @@
   },
   "devDependencies": {
     "json-server": "^0.16.3"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

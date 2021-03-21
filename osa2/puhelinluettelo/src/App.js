@@ -30,6 +30,7 @@ const ErrorNotification = ({ errorMessage}) => {
 
 const Person = (props)=> {
 
+
 return (
   <li>{props.person.name} {props.person.number}
   <button onClick ={props.handleDeleteClick}> delete </button>
@@ -121,21 +122,22 @@ const AddPerson = (props) => {
       .create(person)
       .then(newPerson => {
         props.setPersons(props.persons.concat(newPerson))
+        props.setPersons(props.persons.concat(person))
+        props.setNewName('')
+        props.setNewNumber('')
+        props.setMessage(
+         `Added ${person.name}`
+       )
+       setTimeout(() => {
+         props.setMessage(null)
+       }, 3000)
+      }) .catch(error => {
+        props.setErrorMessage(JSON.stringify(error.response.data))
+        console.log(JSON.stringify(error.response.data))
+         setTimeout(() => {
+         props.setErrorMessage(null)
+       }, 3000)
       })
-     props.setPersons(props.persons.concat(person))
-
-     props.setNewName('')
-     props.setNewNumber('')
-    
-     props.setMessage(
-      `Added ${person.name}`
-    )
-    setTimeout(() => {
-      props.setMessage(null)
-    }, 3000)
-
-
-
   }}
 
 return (
