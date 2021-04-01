@@ -2,9 +2,11 @@
 POST  http://localhost:3003/api/blogs
 content-type: application/json
 
+
+
 {
-  "title": "Jorman kalareissu Killen ja Jortsun kanssa3",
+  #  "title": "hos22222ssssi",
   "author": "Itse Jorma69",
-  "url": "Www.Jromaliini.com/kalat",
-  "likes": -3
+  # "url": "Www.Jromaliini.com/kalat",
+  "likes": ""
 }

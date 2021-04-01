@@ -118,14 +118,14 @@ describe('favorite blog' , () => {
       
       })
 
-      describe('most likes' , () => {
+      // describe('most likes' , () => {
 
 
-        test('jotain tänne ', () => {
-        console.log(listHelper.mostLikes(manyBlogs))
+      //   // test('jotain tänne ', () => {
+      //   // console.log(listHelper.mostLikes(manyBlogs))
   
-          })
+      //     })
         
         
         
-        })
+        // })
