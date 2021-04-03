@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/60684d777b1b87a290fafc5b
+content-type: application/json
+
+
+{
+ "title": "Updated",
+  "author": "Itse Jokke",
+  "url": "Www.Jromaliini.com/puut",
+  "likes": "3"
+}

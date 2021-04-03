@@ -5,8 +5,8 @@ content-type: application/json
 
 
 {
-  #  "title": "hos22222ssssi",
+   "title": "DELETEEN menee",
   "author": "Itse Jorma69",
-  # "url": "Www.Jromaliini.com/kalat",
+  "url": "Www.Jromaliini.com/kalat",
   "likes": ""
 }
