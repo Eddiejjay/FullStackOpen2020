@@ -5,8 +5,9 @@ content-type: application/json
 
 
 {
-   "title": "DELETEEN menee",
-  "author": "Itse Jorma69",
-  "url": "Www.Jromaliini.com/kalat",
-  "likes": ""
+   "title": "Eka Blogi",
+  "author": "Kaapo Kakko",
+  "url": "Www.Jarintv.vom",
+  "likes": "",
+  "user" : "606d8801dab9279cde7c0363"
 }
