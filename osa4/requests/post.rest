@@ -5,9 +5,9 @@ content-type: application/json
 
 
 {
-   "title": "Eka Blogi",
+   "title": "6 Blogi",
   "author": "Kaapo Kakko",
   "url": "Www.Jarintv.vom",
   "likes": "",
-  "user" : "606d8801dab9279cde7c0363"
+  "user" : "606f67f62d1cc9d17cd6df77"
 }

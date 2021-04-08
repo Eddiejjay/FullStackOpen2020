@@ -5,9 +5,9 @@ content-type: application/json
 
 
 {
-  "username":"toka User",
+  "username":"Eero",
   "name": "Itse Jorma69",
-  "password": "wdd",
-  "blogs" : ["606f67502d1cc9d17cd6df73","606f67af2d1cc9d17cd6df75", "606f67ba2d1cc9d17cd6df76"]
+  "password": "12345",
+  "blogs" : []
  
 }
