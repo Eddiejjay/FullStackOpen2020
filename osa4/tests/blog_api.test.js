@@ -5,6 +5,7 @@ const { MONGODB_URI } = require('../utils/config')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -20,6 +21,150 @@ const initialBlogs = [
     likes: "4356"
   },
 ]
+
+
+
+
+const initialUsers = [
+  {
+    username: "Jarmoliini69",
+    name: "Jarmo Pukonen",
+    password: "HilmaOnMinunKissa123"
+
+  },
+  {
+    username: "Pirkkis55",
+    name: "Pirkko Hakkaerainen",
+    password: "tuoli"
+  
+    },
+]
+
+
+
+describe('user tests', ()=> { 
+
+  beforeEach(async () => {
+    await User.deleteMany({})
+    let userObject = new User(initialUsers[0])
+    await userObject.save()
+    userObject = new User(initialUsers[1])
+    await userObject.save()
+  })
+
+test('user with too short password is not added ', 
+async () => {
+  const newUser = {
+    username : "jeeeeeeee",
+    name : "Jami Perkele",
+    password: "12",
+  }
+
+ const response = await api 
+  .post('/api/users')
+  .send(newUser)
+  .expect(400)
+  .expect('Content-Type', /application\/json/)
+
+  expect(response.body.error).toBe('password is too short, minimum 3')
+
+  const allUsers = await api.get('/api/users')
+  expect(allUsers.body).toHaveLength(initialUsers.length)
+})
+
+
+test('user with password missing is not added ', 
+async () => {
+  const newUser = {
+    username : "jeeeeeeee",
+    name : "hippeli"
+  }
+
+ const response = await api 
+  .post('/api/users')
+  .send(newUser)
+  .expect(400)
+  .expect('Content-Type', /application\/json/)
+
+  expect(response.body.error).toBe('you forget password')
+
+  const allUsers = await api.get('/api/users')
+  expect(allUsers.body).toHaveLength(initialUsers.length)
+
+})
+
+test('user with username missing is not added ', 
+async () => {
+  const newUser = {
+    name : "hippeli",
+    password: "3984938493"
+  }
+
+ const response = await api 
+  .post('/api/users')
+  .send(newUser)
+  .expect(400)
+  .expect('Content-Type', /application\/json/)
+
+
+  expect(response.body.error).toBe("User validation failed: username: Path `username` is required.")
+  expect(response.body.username).toBeUndefined()
+
+  const allUsers = await api.get('/api/users')
+  expect(allUsers.body).toHaveLength(initialUsers.length)
+
+
+
+})
+test('user with too short username is not added ', 
+async () => {
+  const newUser = {
+    username: "re",
+    name : "hippeli",
+    password: "3984938493"
+  }
+
+ const response = await api 
+  .post('/api/users')
+  .send(newUser)
+  .expect(400)
+  .expect('Content-Type', /application\/json/)
+
+
+  expect(response.body.error).toBe("User validation failed: username: Path `username` (`re`) is shorter than the minimum allowed length (3).")
+
+  const allUsers = await api.get('/api/users')
+  expect(allUsers.body).toHaveLength(initialUsers.length)
+
+
+  
+})
+test('user with already added username is not added ', 
+
+async () => {
+  const newUser = {
+    username: "Jarmoliini69",
+    name : "hippeli",
+    password: "3984938493"
+  }
+
+ const response = await api 
+  .post('/api/users')
+  .send(newUser)
+  .expect(400)
+  .expect('Content-Type', /application\/json/)
+
+
+  expect(response.body.error).toBe("User validation failed: username: Error, expected `username` to be unique. Value: `Jarmoliini69`")
+
+  const allUsers = await api.get('/api/users')
+  expect(allUsers.body).toHaveLength(initialUsers.length)
+
+}
+
+)})
+
+describe('Blog tests', ()=> {
 beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObject = new Blog(initialBlogs[0])
@@ -101,7 +246,7 @@ test('if likes is empty 0 is given to its value',async ()=> {
   expect(response.body[2].likes).toBe(0)
 })
 
-test('if blog doesnt include title and url, response 400 ba request ', async ()=> {
+test('if blog doesnt include title and url, response 400 bad request ', async ()=> {
 
   const newBlog = {
     author: "Kalajoen Kickelström ",
@@ -115,6 +260,22 @@ test('if blog doesnt include title and url, response 400 ba request ', async ()=
     // .expect('Content-Type', /application\/json/)
 
 })
+}
+)
+// test('if b ', async ()=> {
+
+//   const newBlog = {
+//     author: "Kalajoen Kickelström ",
+//     likes:"4"
+//   }
+
+//   await api
+//     .post('/api/blogs')
+//     .send(newBlog)
+//     .expect(400)
+//     // .expect('Content-Type', /application\/json/)
+
+// })
 
 
 
