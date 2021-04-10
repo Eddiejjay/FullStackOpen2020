@@ -1,11 +1,10 @@
 POST  http://localhost:3003/api/blogs
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkVlcm8iLCJpZCI6IjYwNmY3M2RmOWU3Y2U4ZDZhYWZiZWMzYSIsImlhdCI6MTYxNzkxNjkwOX0.O-Z8MpoAnssD3lIP72pz-lycClEufmts2gYXrJU6rH4
-
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJhYnkiLCJpZCI6IjYwNzE4YjJjMGI3NmE3ZTc5MDk5OWM1NiIsImlhdCI6MTYxODA1Mzk1MX0.GqvIXWP5bcAifAg5T-zFjZvE40VPa5yib5h_7NLSxJw
 
 {
 
-   "title": "Tokeni settiöä3333",
+   "title": "DEleteBaby testi 4",
   "author": "Kaapo Kakko",
   "url": "Www.Jarintv.vom",
   "likes": "22"
