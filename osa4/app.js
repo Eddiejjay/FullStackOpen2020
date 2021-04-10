@@ -1,6 +1,7 @@
 const config = require('./utils/config')
 const express = require('express')
 const app = express()
+require('express-async-errors')
 const blogsRouter = require('./controllers/blogs')
 const mongoose = require('mongoose')
 const usersRouter = require('./controllers/users')
@@ -15,10 +16,13 @@ app.use(express.json())
 
 app.use(middleware.tokenExtractor)
 
-app.use('/api/blogs', blogsRouter)
+
+app.use('/api/blogs',middleware.userExtractor, blogsRouter)
 
 app.use('/api/users', usersRouter)
 
 app.use('/api/login', loginRouter)
+
+app.use(middleware.errorHandler)
 
 module.exports = app
