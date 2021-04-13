@@ -5,7 +5,7 @@ content-type: application/json
 
 
 {
-  "username":"By",
+  "username":"Byrdosar",
   "name": "Itse Jorma69",
   "password": "12345",
   "blogs" : []

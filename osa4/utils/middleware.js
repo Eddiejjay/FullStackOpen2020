@@ -15,20 +15,18 @@ const errorHandler = (error, request, response, next) => {
 
 
 const tokenExtractor = (request, response ,next) => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-      request.token = authorization.substring(7)
-    }
-    next()
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    request.token = authorization.substring(7)
   }
+  next()
+}
 
-  const userExtractor = async (request, response ,next) => {
-    let decodedToken = jwt.verify(request.token, process.env.SECRET)
-    request.user = await User.findById(decodedToken.id)
-    // console.log('middlewwaresta tulostus', request.user)
-    
-    next()
-  }
+const userExtractor = async (request, response ,next) => {
+  let decodedToken = jwt.verify(request.token, process.env.SECRET)
+  request.user = await User.findById(decodedToken.id)
+ next()
+}
 
 
- module.exports = {tokenExtractor, errorHandler, userExtractor}
+module.exports = {tokenExtractor, errorHandler, userExtractor}

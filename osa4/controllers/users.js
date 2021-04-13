@@ -11,7 +11,6 @@ usersRouter.get('/', async (request, response) => {
 })
 
 
-
 usersRouter.post('/', async (request, response) => {
 
   const body = request.body
@@ -25,8 +24,6 @@ usersRouter.post('/', async (request, response) => {
   }
 
 
-  console.log(body)
-  
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
@@ -37,7 +34,6 @@ usersRouter.post('/', async (request, response) => {
     blogs : body.blogs
   })
     
-    
   const savedUser = await user.save()
     .catch((error) => {
       response.status(400).send({ error: error.message })
@@ -46,6 +42,4 @@ usersRouter.post('/', async (request, response) => {
 })
 
   
-
-
 module.exports = usersRouter
