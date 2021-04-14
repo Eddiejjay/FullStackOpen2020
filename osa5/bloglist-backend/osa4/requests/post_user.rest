@@ -1,0 +1,13 @@
+
+POST  http://localhost:3003/api/users
+content-type: application/json
+
+
+
+{
+  "username":"Byrdosar",
+  "name": "Itse Jorma69",
+  "password": "12345",
+  "blogs" : []
+ 
+}

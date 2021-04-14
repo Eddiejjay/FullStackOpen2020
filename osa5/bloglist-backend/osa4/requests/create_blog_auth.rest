@@ -1,0 +1,11 @@
+POST  http://localhost:3003/api/blogs
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJhYnkiLCJpZCI6IjYwNzE4YjJjMGI3NmE3ZTc5MDk5OWM1NiIsImlhdCI6MTYxODA1Mzk1MX0.GqvIXWP5bcAifAg5T-zFjZvE40VPa5yib5h_7NLSxJw
+
+{
+
+   "title": "<333",
+  "author": "Kaapo Kakko",
+  "url": "Www.Jarintv.vom",
+  "likes": "22"
+}
