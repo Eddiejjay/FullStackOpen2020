@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -38,40 +39,56 @@ const App = () => {
  console.log('errörii mnessafef',exception)
   }
 }
+const loginForm = () => (
+  <div>
+  <h2>log in to application</h2>
 
+  <form onSubmit = {loginHandler}>
+    <div>
+    username
+    <input type= "text"
+    value = {username}
+    name = "Username"
+    onChange = {(event) => setUsername(event.target.value)}
+    />
+    </div>
+    <div>
+    password
+    <input type= "text"
+    value = {password}
+    name = "Password"
+    onChange = {({target}) => setPassword(target.value)}
+
+    />
+    </div>
+
+    <button type = "submit" >login</button>
+
+    </form>
+    </div>
+)
+
+const showBlogs = () => (
+<div>
+  <h2>blogs</h2>
+  <p> {user.name} logged in </p>
+  {blogs.map(blog =>
+    <Blog key={blog.id} blog={blog} />
+  )}
+</div>
+
+)
 
   return (
+
     <div>
-      <h2>log in to application</h2>
+      
+      {user===null && loginForm()}
+      {/* {user !== null &&  <p> {user.name} logged in </p>} */}
+      {user !== null && showBlogs()}
+      
 
-
-      <form onSubmit = {loginHandler}>
-        <div>
-        username
-        <input type= "text"
-        value = {username}
-        name = "Username"
-        onChange = {(event) => setUsername(event.target.value)}
-        />
-        </div>
-        <div>
-        password
-        <input type= "text"
-        value = {password}
-        name = "Password"
-        onChange = {({target}) => setPassword(target.value)}
-
-        />
-        </div>
-
-        <button type = "submit" >login</button>
-
-        </form>
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-
+      
     </div>
   )
 }
