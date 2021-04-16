@@ -14,7 +14,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [message, setMessage] = useState('jeejee')
+  const [notificationMessage, setNotificationMessage] = useState(null)
   
 
 
@@ -49,11 +49,22 @@ const App = () => {
   window.localStorage.setItem(
     'loggedUser', JSON.stringify(user)
   ) 
+  setNotificationMessage(`Hello ${user.username} have a nice day!`)
+  setTimeout(() => {
+    setNotificationMessage(null)
+  }, 2000)
 
   setUsername('')
   setPassword('')
   }
   catch (exception) {
+    
+  setNotificationMessage('wrong username or password')
+  setTimeout(() => {
+    setNotificationMessage(null)
+  }, 2000)
+  
+
  console.log('errörii mnessafef',exception)
   }
 }
@@ -86,7 +97,12 @@ const loginForm = () => (
     </div>
 )
 const handleLogOut = () => {
+  setNotificationMessage(`Bye Bye see you next time ${user.username}`)
+  setTimeout(() => {
+    setNotificationMessage(null)
+  }, 2000)
   window.localStorage.removeItem('loggedUser')
+  
 
 
 }
@@ -98,6 +114,13 @@ const handleCreateNewBlog = async (event) => {
   try {
     blogService.setToken(user.token)
     await blogService.create({title,author,url})
+    
+    setNotificationMessage(`a new blog ${title} by ${author}`)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 2000)
+    
+
     setTitle('')
     setUrl('')
     setAuthor('')
@@ -106,7 +129,6 @@ const handleCreateNewBlog = async (event) => {
 
   }
   }
-
 
 
 const createNewBlogForm = () => (
@@ -142,14 +164,11 @@ onChange = {({target}) => setUrl(target.value)}
 
 
 
-
-
-
 const loggedInShow = () => (
 <div>
   <h2>blogs</h2>
 
-  <Notification message={message}/>
+  {notificationMessage !== null && <Notification  message={notificationMessage}/>}
 
   <p> {user.name} logged in <button onClick = {handleLogOut}> log out</button> </p>
 
@@ -164,10 +183,12 @@ const loggedInShow = () => (
 
 
 
+
+
   return (
 
     <div>
-      
+      {user === null && notificationMessage !== null && <Notification  message={notificationMessage}/>}
       {user===null && loginForm()}
       {/* {user !== null &&  <p> {user.name} logged in </p>} */}
       {user !== null && loggedInShow()}
