@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+
 
 
 
@@ -11,11 +14,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
-  
+  const [blogState, setBlogState] = useState(null)
+  const blogFormRef = useRef()
 
 
   useEffect(() => {
@@ -31,6 +32,20 @@ const App = () => {
     setUser(userFromStorage)
   }, [])
 
+
+  const createBlog= async (blogObject) => {
+  
+    try {
+      blogService.setToken(user.token)
+      await blogService.create(blogObject)
+      blogFormRef.current.toggleVisibility()
+    
+    }catch {
+      console.log('käm,mmmmi')
+  
+    }
+    }
+  
 
  const loginHandler = async (event) => { 
   event.preventDefault()
@@ -61,8 +76,8 @@ const App = () => {
     
   setNotificationMessage('wrong username or password')
   setTimeout(() => {
-    setNotificationMessage(null)
-  }, 2000)
+  setNotificationMessage(null)
+}, 2000)
   
 
  console.log('errörii mnessafef',exception)
@@ -108,60 +123,15 @@ const handleLogOut = () => {
 }
 
 
-const handleCreateNewBlog = async (event) => {
-  event.preventDefault()
+const blogForm = () => 
+ (
+<Togglable buttonLabel = "create blog" ref = {blogFormRef}>
+   <BlogForm createBlog = {createBlog}
+   setNotificationMessage = {setNotificationMessage}/>
+  
+</Togglable>
 
-  try {
-    blogService.setToken(user.token)
-    await blogService.create({title,author,url})
-    
-    setNotificationMessage(`a new blog ${title} by ${author}`)
-    setTimeout(() => {
-      setNotificationMessage(null)
-    }, 2000)
-    
-
-    setTitle('')
-    setUrl('')
-    setAuthor('')
-  }catch {
-    console.log('käm,mmmmi')
-
-  }
-  }
-
-
-const createNewBlogForm = () => (
-
-<form onSubmit = {handleCreateNewBlog}>
-<div> title:
-<input
-type = "text"
-value = {title}
-name = "Title"
-onChange = {({target}) => setTitle(target.value)}
-/> </div>
-<div> author:
-<input
-type = "text"
-value = {author}
-name = "Author"
-onChange = {({target}) => setAuthor(target.value)}
-/>
-</div> 
-<div> url:
-<input
-type = "text"
-value = {url}
-name = "Url"
-onChange = {({target}) => setUrl(target.value)}
-/>
-</div> 
-<button type="submit">create</button>
-</form>
-
-)
-
+  )
 
 
 const loggedInShow = () => (
@@ -172,18 +142,17 @@ const loggedInShow = () => (
 
   <p> {user.name} logged in <button onClick = {handleLogOut}> log out</button> </p>
 
-  {createNewBlogForm()}
- 
+
+{blogForm()}
+  
+
   {blogs.map(blog =>
-    <Blog key={blog.id} blog={blog} />
+    <Blog key={blog.id} blog={blog}/>
+     
   )}
 </div>
 
 )
-
-
-
-
 
   return (
 
@@ -192,9 +161,6 @@ const loggedInShow = () => (
       {user===null && loginForm()}
       {/* {user !== null &&  <p> {user.name} logged in </p>} */}
       {user !== null && loggedInShow()}
-      
-
-      
     </div>
   )
 }
