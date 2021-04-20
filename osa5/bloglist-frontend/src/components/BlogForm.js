@@ -14,7 +14,8 @@ const addBlog = (event) => {
     createBlog({
         title: title,
         author: author,
-        url: url
+        url: url,
+        likes :''
       })
       setNotificationMessage(`a new blog ${title} by ${author}`)
       setTimeout(() => {

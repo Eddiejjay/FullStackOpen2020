@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+
+import React, { useState, useEffect } from 'react'
 
 const blogStyle = {
   paddingTop: 10,
@@ -7,13 +8,29 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({blog}) => {
+const Blog = ({blog, updateLike}) => {
 const [blogState, setBlogState] = useState(false)
+const [likes, setLikes] = useState(blog.likes)
 
 const handleShow = () => setBlogState(true)
 const handleHide = () => setBlogState(false)
 
 
+const handleLike = (event) => { 
+ console.log(event.target)
+ setLikes(likes +1)
+
+  const blogObject = {
+    user: blog.user.id,
+    likes: likes ,
+    author: blog.author,
+    title: blog.title,
+    url: blog.url
+  }
+  updateLike(blogObject, blog.id)
+ 
+
+}
   if (blogState === false) {
   return (
 
@@ -30,7 +47,7 @@ else {
   <br></br>
   {blog.url}
   <br></br>
-  {blog.likes} <button>like</button>
+  {blog.likes} <button onClick = {handleLike}>like</button>
   <br></br> 
   {blog.user === null ?"":blog.user.name }
 </div>  

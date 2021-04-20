@@ -15,7 +15,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
-  const [blogState, setBlogState] = useState(null)
   const blogFormRef = useRef()
 
 
@@ -33,7 +32,7 @@ const App = () => {
   }, [])
 
 
-  const createBlog= async (blogObject) => {
+  const createBlog = async (blogObject) => {
   
     try {
       blogService.setToken(user.token)
@@ -44,6 +43,17 @@ const App = () => {
       console.log('käm,mmmmi')
   
     }
+    }
+
+    const updateLike = async (blogObject, id) => {
+      try {
+        await blogService.addLike(blogObject,id)
+
+      }catch(error){
+        console.log(error)
+        console.log('että semmosta puttia')
+    }
+  
     }
   
 
@@ -147,7 +157,7 @@ const loggedInShow = () => (
   
 
   {blogs.map(blog =>
-    <Blog key={blog.id} blog={blog}/>
+    <Blog key={blog.id} blog={blog} updateLike = {updateLike}/>
      
   )}
 </div>
