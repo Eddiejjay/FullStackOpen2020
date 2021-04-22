@@ -57,6 +57,20 @@ const App = () => {
     }
   
 
+    const removeBlog = async (id) => {
+      try {
+        console.log(user)
+    blogService.setToken(user.token)
+    await blogService.remove(id)
+
+    } catch(error) {
+      console.log(error)
+      console.log('errrrööööör REMOVE')
+    }
+  }
+
+
+
  const loginHandler = async (event) => { 
   event.preventDefault()
   
@@ -156,8 +170,8 @@ const loggedInShow = () => (
 {blogForm()}
   
 
-  {blogs.map(blog =>
-    <Blog key={blog.id} blog={blog} updateLike = {updateLike}/>
+  {blogs.sort((a,b)=> b.likes-a.likes).map(blog =>
+    <Blog key={blog.id} blog={blog} updateLike = {updateLike} removeBlog = {removeBlog} user={user}/>
      
   )}
 </div>

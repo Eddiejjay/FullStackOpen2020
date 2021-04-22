@@ -8,13 +8,20 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({blog, updateLike}) => {
+const Blog = ({blog, updateLike, removeBlog, user}) => {
 const [blogState, setBlogState] = useState(false)
 const [likes, setLikes] = useState(blog.likes)
 
 const handleShow = () => setBlogState(true)
 const handleHide = () => setBlogState(false)
 
+const handleRemove = () => {
+if (window.confirm('Remove blog ', blog.title, blog.author))
+removeBlog(blog.id)
+console.log(blog)
+
+
+}
 
 const handleLike = (event) => { 
  console.log(event.target)
@@ -50,6 +57,9 @@ else {
   {blog.likes} <button onClick = {handleLike}>like</button>
   <br></br> 
   {blog.user === null ?"":blog.user.name }
+  <br></br>
+  
+  {user.username === blog.user.username? <button onClick = {handleRemove}>remove</button>:''}
 </div>  
 
 )
