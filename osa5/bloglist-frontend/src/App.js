@@ -21,47 +21,48 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
-  const userFromStorage = JSON.parse(window.localStorage.getItem('loggedUser'))
+    const userFromStorage = JSON.parse(window.localStorage.getItem('loggedUser'))
 
-  if (userFromStorage) 
-    setUser(userFromStorage)
+    if (userFromStorage)
+      setUser(userFromStorage)
   }, [])
 
 
   const createBlog = async (blogObject) => {
-  
+
     try {
       blogService.setToken(user.token)
       await blogService.create(blogObject)
       blogFormRef.current.toggleVisibility()
-    
-    }catch {
+
+    }catch(error) {
       console.log('käm,mmmmi')
-  
+      console.log(error)
+
     }
+  }
+
+  const updateLike = async (blogObject, id) => {
+    try {
+      await blogService.addLike(blogObject,id)
+
+    }catch(error){
+      console.log(error)
+      console.log('että semmosta puttia')
     }
 
-    const updateLike = async (blogObject, id) => {
-      try {
-        await blogService.addLike(blogObject,id)
+  }
 
-      }catch(error){
-        console.log(error)
-        console.log('että semmosta puttia')
-    }
-  
-    }
-  
 
-    const removeBlog = async (id) => {
-      try {
-        console.log(user)
-    blogService.setToken(user.token)
-    await blogService.remove(id)
+  const removeBlog = async (id) => {
+    try {
+      console.log(user)
+      blogService.setToken(user.token)
+      await blogService.remove(id)
 
     } catch(error) {
       console.log(error)
@@ -71,112 +72,112 @@ const App = () => {
 
 
 
- const loginHandler = async (event) => { 
-  event.preventDefault()
-  
-  const credentials = {
-    username : username,
-    password : password
+  const loginHandler = async (event) => {
+    event.preventDefault()
+
+    const credentials = {
+      username : username,
+      password : password
+    }
+
+    try {
+
+
+      const user = await loginService.login(credentials)
+      setUser(user)
+
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
+      setNotificationMessage(`Hello ${user.username} have a nice day!`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 2000)
+
+      setUsername('')
+      setPassword('')
+    }
+    catch (exception) {
+
+      setNotificationMessage('wrong username or password')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 2000)
+
+
+      console.log('errörii mnessafef',exception)
+    }
   }
-
-  try {
-
-
-  const user = await loginService.login(credentials)
-  setUser(user)
-
-  window.localStorage.setItem(
-    'loggedUser', JSON.stringify(user)
-  ) 
-  setNotificationMessage(`Hello ${user.username} have a nice day!`)
-  setTimeout(() => {
-    setNotificationMessage(null)
-  }, 2000)
-
-  setUsername('')
-  setPassword('')
-  }
-  catch (exception) {
-    
-  setNotificationMessage('wrong username or password')
-  setTimeout(() => {
-  setNotificationMessage(null)
-}, 2000)
-  
-
- console.log('errörii mnessafef',exception)
-  }
-}
-const loginForm = () => (
-  <div>
-  <h2>log in to application</h2>
-
-  <form onSubmit = {loginHandler}>
+  const loginForm = () => (
     <div>
+      <h2>log in to application</h2>
+
+      <form onSubmit = {loginHandler}>
+        <div>
     username
-    <input type= "text"
-    value = {username}
-    name = "Username"
-    onChange = {(event) => setUsername(event.target.value)}
-    />
-    </div>
-    <div>
+          <input type= "text"
+            value = {username}
+            name = "Username"
+            onChange = {(event) => setUsername(event.target.value)}
+          />
+        </div>
+        <div>
     password
-    <input type= "text"
-    value = {password}
-    name = "Password"
-    onChange = {({target}) => setPassword(target.value)}
+          <input type= "text"
+            value = {password}
+            name = "Password"
+            onChange = {({ target }) => setPassword(target.value)}
 
-    />
+          />
+        </div>
+
+        <button type = "submit" >login</button>
+
+      </form>
     </div>
+  )
+  const handleLogOut = () => {
+    setNotificationMessage(`Bye Bye see you next time ${user.username}`)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 2000)
+    window.localStorage.removeItem('loggedUser')
 
-    <button type = "submit" >login</button>
 
-    </form>
+
+  }
+
+
+  const blogForm = () =>
+    (
+      <Togglable buttonLabel = "create blog" ref = {blogFormRef}>
+        <BlogForm createBlog = {createBlog}
+          setNotificationMessage = {setNotificationMessage}/>
+
+      </Togglable>
+
+    )
+
+
+  const loggedInShow = () => (
+    <div>
+      <h2>blogs</h2>
+
+      {notificationMessage !== null && <Notification  message={notificationMessage}/>}
+
+      <p> {user.name} logged in <button onClick = {handleLogOut}> log out</button> </p>
+
+
+      {blogForm()}
+
+
+      {blogs.sort((a,b) => b.likes-a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} updateLike = {updateLike} removeBlog = {removeBlog} user={user}/>
+
+      )}
     </div>
-)
-const handleLogOut = () => {
-  setNotificationMessage(`Bye Bye see you next time ${user.username}`)
-  setTimeout(() => {
-    setNotificationMessage(null)
-  }, 2000)
-  window.localStorage.removeItem('loggedUser')
-  
-
-
-}
-
-
-const blogForm = () => 
- (
-<Togglable buttonLabel = "create blog" ref = {blogFormRef}>
-   <BlogForm createBlog = {createBlog}
-   setNotificationMessage = {setNotificationMessage}/>
-  
-</Togglable>
 
   )
-
-
-const loggedInShow = () => (
-<div>
-  <h2>blogs</h2>
-
-  {notificationMessage !== null && <Notification  message={notificationMessage}/>}
-
-  <p> {user.name} logged in <button onClick = {handleLogOut}> log out</button> </p>
-
-
-{blogForm()}
-  
-
-  {blogs.sort((a,b)=> b.likes-a.likes).map(blog =>
-    <Blog key={blog.id} blog={blog} updateLike = {updateLike} removeBlog = {removeBlog} user={user}/>
-     
-  )}
-</div>
-
-)
 
   return (
 
