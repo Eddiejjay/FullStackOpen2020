@@ -19,13 +19,11 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
   const handleRemove = () => {
     if (window.confirm('Remove blog ', blog.title, blog.author))
       removeBlog(blog.id)
-    console.log(blog)
 
 
   }
 
-  const handleLike = (event) => {
-    console.log(event.target)
+  const handleLike = () => {
     setLikes(likes +1)
 
     const blogObject = {
@@ -38,7 +36,9 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
     updateLike(blogObject, blog.id)
 
 
+
   }
+
   if (blogState === false) {
     return (
 

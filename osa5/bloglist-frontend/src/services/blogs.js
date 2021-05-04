@@ -25,6 +25,7 @@ const create = async (newBlog) => {
 
 const addLike = async (blog, id) => {
   await axios.put(`${baseUrl}/${id}`, blog)
+  console.log(blog)
 
 }
 
