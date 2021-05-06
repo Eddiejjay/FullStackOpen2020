@@ -51,7 +51,7 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
     return(
       <div style = {blogStyle}>
         {blog.title} {blog.author}
-        <button onClick ={handleHide}>hide</button>
+        <button id = "hide" onClick ={handleHide}>hide</button>
         <br></br>
         {blog.url}
         <br></br>

@@ -12,7 +12,6 @@ describe('Blog app', function() {
     }
 
     cy.request('POST', 'http://localhost:3003/api/users', user)
-    // create here a user to backend
     cy.visit('http://localhost:3000')
   })
 
@@ -85,7 +84,7 @@ describe('Blog app', function() {
 
     })
 
-    it.only('Blogs creator can delete blog', function() {
+    it('Blogs creator can delete blog', function() {
       cy.contains('create blog').click()
       cy.get('#title').type('Olipahan mustikkareissu ;)')
       cy.get('#author').type('Salainen viettelys68')
@@ -93,9 +92,48 @@ describe('Blog app', function() {
       cy.get('#create-blog').click()
       cy.visit('http://localhost:3000')
       cy.get('#view').click()
-      cy.get("#button-remove").click()
+      cy.get('#button-remove').click()
       cy.reload()
       cy.get('html').should('not.contain','Olipahan mustikkareissu ;) Salainen viettelys68')
+
+    })
+
+    it('Blogs are ordered correctly by likes, most likes blog first', function() {
+      cy.contains('create blog').click()
+      cy.get('#title').type('Olipahan mustikkareissu ;)')
+      cy.get('#author').type('Salainen viettelys68')
+      cy.get('#url').type('www.ulpukanuhkeat.com')
+      cy.get('#create-blog').click()
+      cy.visit('http://localhost:3000')
+
+      cy.contains('create blog').click()
+      cy.get('#title').type('Jee jee kaljaa')
+      cy.get('#author').type('Urho')
+      cy.get('#url').type('www.Urho.com')
+      cy.get('#create-blog').click()
+      cy.visit('http://localhost:3000')
+
+      cy.contains('create blog').click()
+      cy.get('#title').type('Noh olinpas monä...')
+      cy.get('#author').type('Kartsa')
+      cy.get('#url').type('www.KartsanJengi.com')
+      cy.get('#create-blog').click()
+      cy.visit('http://localhost:3000')
+
+      cy.get('#view').click()
+      cy.get('#like').dblclick()
+      cy.get('#like').dblclick()
+      cy.get('#view').click()
+      cy.get('#hide').click()
+      cy.get('#like').dblclick()
+      cy.get('#like').dblclick()
+      cy.get('#like').dblclick()
+      cy.get('#view').click()
+      cy.get('#view').click()
+
+      cy.reload()
+      cy.get('#view').click()
+      cy.get('#root').should('contain','5 like')
 
     })
   })
