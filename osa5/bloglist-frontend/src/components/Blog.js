@@ -44,7 +44,7 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
 
       <div style = {blogStyle}>
         {blog.title} {blog.author}
-        <button onClick = {handleShow}>view</button>
+        <button id = "view" onClick = {handleShow}>view</button>
       </div>
     ) }
   else {
@@ -55,12 +55,12 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
         <br></br>
         {blog.url}
         <br></br>
-        {blog.likes} <button onClick = {handleLike}>like</button>
+        {blog.likes} <button id = "like" onClick = {handleLike}>like</button>
         <br></br>
         {blog.user === null ?'':blog.user.name }
         <br></br>
 
-        {user.username === blog.user.username? <button onClick = {handleRemove}>remove</button>:''}
+        {user.username === blog.user.username? <button id = "button-remove" onClick = {handleRemove}>remove</button>:''}
       </div>
 
     )

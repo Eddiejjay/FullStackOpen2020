@@ -115,7 +115,9 @@ const App = () => {
       <form onSubmit = {loginHandler}>
         <div>
     username
-          <input type= "text"
+          <input
+            id = 'username'
+            type= "text"
             value = {username}
             name = "Username"
             onChange = {(event) => setUsername(event.target.value)}
@@ -123,7 +125,9 @@ const App = () => {
         </div>
         <div>
     password
-          <input type= "text"
+          <input
+            id = 'password'
+            type= "text"
             value = {password}
             name = "Password"
             onChange = {({ target }) => setPassword(target.value)}
@@ -131,7 +135,7 @@ const App = () => {
           />
         </div>
 
-        <button type = "submit" >login</button>
+        <button id = "login-button" type = "submit" >login</button>
 
       </form>
     </div>
@@ -160,7 +164,7 @@ const App = () => {
 
 
   const loggedInShow = () => (
-    <div>
+    <div id = "loggedInDiv">
       <h2>blogs</h2>
 
       {notificationMessage !== null && <Notification  message={notificationMessage}/>}
