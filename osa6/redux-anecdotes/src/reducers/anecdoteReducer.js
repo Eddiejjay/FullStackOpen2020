@@ -1,3 +1,5 @@
+
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -37,10 +39,21 @@ export const addNew = (newAnecdote) => {
 
 }
 
+export const setNotification = notification => {
+  return (
+    {type:'NOTIFICATION',
+    message:notification}
+
+  )
+}
+export const deleteNotification = () => {
+  return (
+    {type:'REMOVENOTIFICATION'
+  })}
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
     const id = action.id
@@ -54,6 +67,44 @@ const reducer = (state = initialState, action) => {
   default: return state
   }}
 
+const  notificationState = []
+
+export const notificationReducer = (state = notificationState, action) => {
+    switch (action.type) {
+      case 'NOTIFICATION' :
+      return state.concat(action.message)
+      case 'REMOVENOTIFICATION': 
+        return state = notificationState
+      default: return state
+      
+
+    }
+
+  }
+
+  export const filterChange = filterText => {
+    console.log('filter text ' ,filterText)
+    return (
+      {
+        type:'BYINPUTFIELD',
+        filterText:filterText
+      }
+      
+    )
+  }
+
+
+  export const filterReducer =(state='', action)=>{
+    switch (action.type){
+      case'BYINPUTFIELD':
+      return action.filterText
+      default : return state
+    }
+
+
+  }
+
+
   
 
-export default reducer
+export default anecdoteReducer
