@@ -6,6 +6,7 @@ import Notification from './Notification'
 
 const AnecdoteList = () => {
   const filter = useSelector (state => state.filter)
+
   const anecdotes =  useSelector(state => state.anecdotes).filter(a =>  a.content.includes(filter))
 
   const dispatch = useDispatch()
