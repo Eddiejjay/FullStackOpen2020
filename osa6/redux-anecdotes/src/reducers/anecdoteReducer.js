@@ -1,6 +1,6 @@
 
 
-
+import anecdoteService from '../services/anecdotes'
 
 // const asObject = (anecdote) => {
 //   return {
@@ -10,23 +10,55 @@
 // }
 
 
-export const addVote = (id) => {
-  return {
-    type:'VOTE',
-    id:id
+// export const voteAnecdote = (votedAnecdote) => {
+//   return async (dispatch) => {
+//     const anecdote = {
+//       ...votedAnecdote,
+//       votes: votedAnecdote.votes + 1,
+//     };
 
+//     const updatedAnecdote = await anecdoteService.update(anecdote);
+//     const { id } = updatedAnecdote;
+//     dispatch({
+//       type: "VOTE",
+//       data: { id },
+//     });
+//   };
+// };
+
+
+export const addVote = votedAnecdote => {
+  return async dispatch => {
+    const anecdote = {
+    ...votedAnecdote,
+    votes : votedAnecdote.votes +1
+  
   }
 
+
+  console.log('anekdootti on ', anecdote.id)
+  const updatedAnecdote = await anecdoteService.updateLike(anecdote)
+  console.log(updatedAnecdote)
+
+    console.log('updatetettu' , updatedAnecdote.votes)
+    dispatch({
+      type: "VOTE",
+      id: updatedAnecdote.id ,
+}
+    )}}
+
+
+
+export const addNew = anecdote => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(anecdote)
+    dispatch({
+      type: 'NEW',
+      data: {...newAnecdote},
+    })
+  }
 }
 
-export const addNew = (newAnecdote) => {
-
-  return {type: 'NEW',
-          data: {
-          ...newAnecdote}
-          }
-
-}
 
 export const setNotification = notification => {
   return (
@@ -40,15 +72,17 @@ export const deleteNotification = () => {
     {type:'REMOVENOTIFICATION'
   })}
 
-// const initialState = anecdotesAtStart.map(asObject)
-export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes,
+
+
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes,
+    })
   }
 }
-
-
 
 
 const anecdoteReducer = (state = [], action) => {

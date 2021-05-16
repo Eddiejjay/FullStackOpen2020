@@ -11,13 +11,11 @@ const AnecdoteForm = () => {
 
 
 const addNewA = async (event) => {
+      event.preventDefault()
+      const content = event.target.input.value
+      event.target.input.value = ''
+      dispatch(addNew(content))
 
-    event.preventDefault()
-
-    console.log('event.targer.valueeee on', event.target.input.value)
-    const content = event.target.input.value
-    const newAnecdote = await anecdoteService.createNew(content)
-    dispatch(addNew(newAnecdote))
     dispatch(setNotification(`you added  ${event.target.input.value}`))
 
 

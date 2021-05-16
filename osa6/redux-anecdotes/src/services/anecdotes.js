@@ -14,5 +14,13 @@ const getAll = async () => {
     return response.data
   }
 
+  const updateLike = async (anecdote) => {
+    const response = await axios.put(`${baseUrl}/${anecdote.id}`, anecdote)
+    return response.data
+
+
+  }
+
+
   
-  export default { getAll, createNew }
+  export default { getAll, createNew, updateLike }
