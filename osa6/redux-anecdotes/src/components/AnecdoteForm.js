@@ -16,12 +16,8 @@ const addNewA = async (event) => {
       event.target.input.value = ''
       dispatch(addNew(content))
 
-    dispatch(setNotification(`you added  ${event.target.input.value}`))
-
-
-    setTimeout(() => {
-      dispatch(deleteNotification())
-    }, 5000)
+    dispatch(setNotification(`you added '${content}'`, 3))
+      
   }
 
 

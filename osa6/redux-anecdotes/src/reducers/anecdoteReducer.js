@@ -36,11 +36,7 @@ export const addVote = votedAnecdote => {
   }
 
 
-  console.log('anekdootti on ', anecdote.id)
   const updatedAnecdote = await anecdoteService.updateLike(anecdote)
-  console.log(updatedAnecdote)
-
-    console.log('updatetettu' , updatedAnecdote.votes)
     dispatch({
       type: "VOTE",
       id: updatedAnecdote.id ,
@@ -59,13 +55,20 @@ export const addNew = anecdote => {
   }
 }
 
+  
 
-export const setNotification = notification => {
-  return (
+export const setNotification = (notification, time) => {
+  return async dispatch => {
+  
+    dispatch(
     {type:'NOTIFICATION',
-    message:notification}
+    message:notification})
 
-  )
+    setTimeout(() => {
+      dispatch(deleteNotification())
+    }, time*1000)
+
+  }
 }
 export const deleteNotification = () => {
   return (
@@ -91,7 +94,6 @@ const anecdoteReducer = (state = [], action) => {
     const id = action.id
     const voteToChange = state.find(a => a.id === id)
     const changedVote = {...voteToChange, votes: voteToChange.votes + 1}
-    console.log(changedVote)
     return state.map ( vote => vote.id !== id? vote: changedVote)
     case 'NEW': 
     const anecdoteToAdd = action.data
@@ -117,7 +119,6 @@ export const notificationReducer = (state = notificationState, action) => {
   }
 
   export const filterChange = filterText => {
-    console.log('filter text ' ,filterText)
     return (
       {
         type:'BYINPUTFIELD',
