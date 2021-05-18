@@ -1,7 +1,7 @@
 import React from 'react'
 import {addNew} from '../reducers/anecdoteReducer'
 import { connect } from 'react-redux'
-import {setNotification, deleteNotification} from '../reducers/anecdoteReducer'
+import {setNotification} from '../reducers/anecdoteReducer'
 
 
 const AnecdoteForm = (props) => {
@@ -15,7 +15,7 @@ const addNewA = async (event) => {
       event.target.input.value = ''
       props.addNew(content)
 
-    props.setNotification(`you added '${content}'`, 3)
+    props.setNotification(`you added '${content}'`, 5)
       
   }
 

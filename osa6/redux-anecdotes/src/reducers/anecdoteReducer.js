@@ -55,19 +55,24 @@ export const addNew = anecdote => {
   }
 }
 
-  
+  let timeout
 
 export const setNotification = (notification, time) => {
   return async dispatch => {
   
+    if (timeout) {
+      clearTimeout(timeout)
+      timeout = null
+    }
+
     dispatch(
     {type:'NOTIFICATION',
     message:notification})
-
-    setTimeout(() => {
+  
+    timeout = setTimeout(() => {
       dispatch(deleteNotification())
     }, time*1000)
-
+    
   }
 }
 export const deleteNotification = () => {
@@ -108,7 +113,7 @@ const  notificationState = []
 export const notificationReducer = (state = notificationState, action) => {
     switch (action.type) {
       case 'NOTIFICATION' :
-      return state.concat(action.message)
+      return state = notificationState, state.concat(action.message)
       case 'REMOVENOTIFICATION': 
         return state = notificationState
       default: return state
