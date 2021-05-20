@@ -1,4 +1,5 @@
 
+import {useField} from './hooks'
 import {
   BrowserRouter as Router,
   Switch, Route, Link, useParams, useHistory
@@ -21,7 +22,6 @@ const Menu = () => {
 }
 
 const Anecdote = ({anecdotes}) => {
-  console.log(anecdotes)
   const id = useParams().id
   console.log(id)
   const anecdote = anecdotes.find(a => a.id ===id)
@@ -71,23 +71,34 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
-  const history = useHistory()
+  const { reset: resetContent, ...content } = useField('text')
+  const { reset: resetAuthor, ...author } = useField('text')
+  const { reset: resetInfo, ...info } = useField('text')
 
+
+
+
+  
+  const history = useHistory()
   const handleSubmit = (e) => {
+  
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content:content.value,
+      author:author.value,
+      info : info.value,
       votes: 0
     })
-    props.setNotification(`a new anecdote ${content} created!`)
+
+    props.setNotification(`a new anecdote ${content.value} created!`)
     history.push("/")
+ 
 
-
+  }
+  const reset = () => {
+    resetContent()
+    resetAuthor()
+    resetInfo()
   }
 
   return (
@@ -96,17 +107,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...info} />
         </div>
         <button>create</button>
+        <button type = 'reset' onClick={reset}>reset</button>
       </form>
     </div>
   )
@@ -131,6 +143,7 @@ const App = () => {
     }
   ])
 
+  console.log(anecdotes)
   const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
