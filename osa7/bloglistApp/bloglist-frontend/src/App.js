@@ -7,18 +7,21 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import { createNotification } from './reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { initializeBlogs } from './reducers/blogReducer'
 
 
 
 
 const App = () => {
   const dispatch = useDispatch()
-  const storeNotification = useSelector( state => state)
+  const storeNotification = useSelector( state => state.notification)
+  const blogs = useSelector(state => state.blogs)
+  console.log(blogs)
   console.log(storeNotification)
 
 
 
-  const [blogs, setBlogs] = useState([])
+  // const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -28,7 +31,8 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      // setBlogs( blogs ),
+      dispatch(initializeBlogs(blogs))
     )
   }, [])
 
