@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+// import { useDispatch } from 'react-redux'
+// import { addLikeToStore } from '../reducers/blogReducer'
 
 const blogStyle = {
   paddingTop: 10,
@@ -10,8 +12,8 @@ const blogStyle = {
   marginBottom: 5
 }
 const Blog = ({ blog, updateLike, removeBlog, user }) => {
+
   const [blogState, setBlogState] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const handleShow = () => setBlogState(true)
   const handleHide = () => setBlogState(false)
@@ -24,17 +26,15 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
   }
 
   const handleLike = () => {
-    setLikes(likes +1)
 
     const blogObject = {
       user: blog.user.id,
-      likes: likes ,
+      likes: blog.likes +1 ,
       author: blog.author,
       title: blog.title,
       url: blog.url
     }
     updateLike(blogObject, blog.id)
-
 
 
   }

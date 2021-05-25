@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import App from './App'
 import notificationReducer from './reducers/notificationReducer'
 import blogReducer from './reducers/blogReducer'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 
 
@@ -14,7 +15,11 @@ const reducer = combineReducers({
   blogs: blogReducer
 })
 
-const store = createStore(reducer)
+const store = createStore(reducer, composeWithDevTools())
+store.subscribe(() => {
+  const storeNow = store.getState()
+  console.log('Store on nyt, tulostus index.js subscribe',storeNow)
+})
 
 ReactDOM.render(
   <Provider store = {store}>

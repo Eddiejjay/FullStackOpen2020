@@ -7,7 +7,8 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import { createNotification } from './reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs,addLikeToStore, deleteBlog } from './reducers/blogReducer'
+
 
 
 
@@ -28,13 +29,11 @@ const App = () => {
   // const [notificationMessage, setNotificationMessage] = useState(null)
   const blogFormRef = useRef()
 
-
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      // setBlogs( blogs ),
       dispatch(initializeBlogs(blogs))
     )
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const userFromStorage = JSON.parse(window.localStorage.getItem('loggedUser'))
@@ -61,6 +60,7 @@ const App = () => {
   const updateLike = async (blogObject, id) => {
     try {
       await blogService.addLike(blogObject,id)
+      dispatch(addLikeToStore(id))
 
     }catch(error){
       console.log(error)
@@ -75,6 +75,7 @@ const App = () => {
       console.log(user)
       blogService.setToken(user.token)
       await blogService.remove(id)
+      dispatch(deleteBlog(id))
 
     } catch(error) {
       console.log(error)
@@ -132,7 +133,7 @@ const App = () => {
           <input
             id = 'username'
             type= "text"
-            value = {username}
+            valupdateue = {username}
             name = "Username"
             onChange = {(event) => setUsername(event.target.value)}
           />

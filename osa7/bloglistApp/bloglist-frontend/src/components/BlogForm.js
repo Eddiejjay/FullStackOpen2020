@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
+import { addNewBlogStore } from '../reducers/blogReducer'
 
 
 const BlogForm = ({ createBlog }) => {
@@ -15,12 +16,17 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog({
+
+    const newBlog = {
       title: title,
       author: author,
       url: url,
       likes :''
-    })
+
+    }
+
+    createBlog(newBlog)
+    dispatch(addNewBlogStore(newBlog))
     dispatch(createNotification(`a new blog ${title} by ${author}`))
     setTimeout(() => {
       dispatch(createNotification(''))

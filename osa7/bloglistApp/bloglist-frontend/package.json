@@ -46,6 +46,7 @@
     "@testing-library/react": "^11.2.6",
     "cypress": "^7.2.0",
     "eslint-plugin-cypress": "^2.11.3",
-    "eslint-plugin-jest": "^24.3.5"
+    "eslint-plugin-jest": "^24.3.5",
+    "redux-devtools-extension": "^2.13.9"
   }
 }
