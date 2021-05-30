@@ -1,10 +1,26 @@
 /* eslint-disable no-case-declarations */
-export const initializeBlogs = (blogs) => {
-  return {
-    type: 'INITBLOGS',
-    blogs : blogs
-  }
-}
+// export const initializeBlogs = (blogs) => {
+//   return {
+//     type: 'INITBLOGS',
+//     blogs : blogs
+//   }
+// }
+
+import blogsService from '../services/blogs'
+
+export const initializeBlogs = () => {
+  return async dispatch => {
+    const blogs = await blogsService.getAll()
+    dispatch ( {
+      type: 'INITBLOGS',
+      blogs : blogs
+
+    })}}
+
+
+
+
+
 export const addLikeToStore = ( id ) => {
   return {
     type: 'ADDLIKESTORE',

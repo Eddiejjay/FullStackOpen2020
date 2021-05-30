@@ -1,46 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import React, { useEffect, useRef } from 'react'
+import AllBlogs from './components/AllBlogs'
+import Users from './components/Users'
+import User from './components/User'
+import Menu from './components/Menu'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import { createNotification } from './reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { initializeBlogs,addLikeToStore, deleteBlog } from './reducers/blogReducer'
-
-
-
+import { initializeUsers } from './reducers/allUsersReducers'
+import { storeUser } from './reducers/userReducer'
+import {
+  BrowserRouter as Router, Route, Switch
+} from 'react-router-dom'
+import DetailsBlog from './components/DetailsBlog'
 
 
 const App = () => {
   const dispatch = useDispatch()
   const storeNotification = useSelector( state => state.notification)
-  const blogs = useSelector(state => state.blogs)
-  console.log(blogs)
-  console.log(storeNotification)
-
-
-
-  // const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  // const [notificationMessage, setNotificationMessage] = useState(null)
+  // const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      dispatch(initializeBlogs(blogs))
-    )
+    dispatch(initializeBlogs()),
+    dispatch(initializeUsers())
+
   }, [dispatch])
 
   useEffect(() => {
     const userFromStorage = JSON.parse(window.localStorage.getItem('loggedUser'))
 
     if (userFromStorage)
-      setUser(userFromStorage)
-  }, [])
+      dispatch(storeUser(userFromStorage))
+  }, [dispatch])
+
+
 
 
   const createBlog = async (blogObject) => {
@@ -83,82 +82,11 @@ const App = () => {
     }
   }
 
-
-
-  const loginHandler = async (event) => {
-    event.preventDefault()
-
-    const credentials = {
-      username : username,
-      password : password
-    }
-
-    try {
-
-
-      const user = await loginService.login(credentials)
-      setUser(user)
-
-      window.localStorage.setItem(
-        'loggedUser', JSON.stringify(user)
-      )
-
-      dispatch(createNotification(`Hello ${user.username} have a nice day!`))
-
-      setTimeout(() => {
-        dispatch(createNotification(''))
-      }, 2000)
-
-      setUsername('')
-      setPassword('')
-    }
-    catch (exception) {
-
-      dispatch(createNotification('wrong username or password'))
-      setTimeout(() => {
-        dispatch(createNotification(''))
-      }, 2000)
-
-
-      console.log('errörii mnessafef',exception)
-    }
-  }
-  const loginForm = () => (
-    <div>
-      <h2>log in to application</h2>
-
-      <form onSubmit = {loginHandler}>
-        <div>
-    username
-          <input
-            id = 'username'
-            type= "text"
-            valupdateue = {username}
-            name = "Username"
-            onChange = {(event) => setUsername(event.target.value)}
-          />
-        </div>
-        <div>
-    password
-          <input
-            id = 'password'
-            type= "text"
-            value = {password}
-            name = "Password"
-            onChange = {({ target }) => setPassword(target.value)}
-
-          />
-        </div>
-
-        <button id = "login-button" type = "submit" >login</button>
-
-      </form>
-    </div>
-  )
   const handleLogOut = () => {
     dispatch(createNotification(`Bye Bye see you next time ${user.username}`))
     setTimeout(() => {
       dispatch(createNotification(''))
+      dispatch(storeUser(null))
     }, 2000)
     window.localStorage.removeItem('loggedUser')
 
@@ -179,20 +107,29 @@ const App = () => {
 
   const loggedInShow = () => (
     <div id = "loggedInDiv">
-      <h2>blogs</h2>
-
-      {storeNotification !== '' && <Notification message = {storeNotification}/>}
-
-      <p> {user.name} logged in <button onClick = {handleLogOut}> log out</button> </p>
 
 
-      {blogForm()}
 
+      <Router>
+        <Menu handleLogOut ={ handleLogOut }></Menu>
+        {blogForm()}
+        <Switch>
+          <Route path = "/users/:id" >
+            <User/>
+          </Route>
+          <Route path = "/users">
+            <Users/>
+          </Route>
+          <Route path = "/blogs/:id">
 
-      {blogs.sort((a,b) => b.likes-a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateLike = {updateLike} removeBlog = {removeBlog} user={user}/>
+            <DetailsBlog removeBlog = {removeBlog} updateLike = {updateLike}></DetailsBlog>
+          </Route>
+          <Route path = "/blogs">
 
-      )}
+            <AllBlogs updateLike = {updateLike} removeBlog = {removeBlog} user = {user}></AllBlogs>
+          </Route>
+        </Switch>
+      </Router>
     </div>
 
   )
@@ -201,7 +138,7 @@ const App = () => {
 
     <div>
       {user === null && storeNotification !== '' && <Notification  message ={storeNotification}/>}
-      {user===null && loginForm()}
+      {user=== null && <LoginForm ></LoginForm>}
       {/* {user !== null &&  <p> {user.name} logged in </p>} */}
       {user !== null && loggedInShow()}
     </div>
