@@ -1,7 +1,7 @@
 
 
 
-
+import Comments from './Comments'
 import React, { } from 'react'
 import { useSelector } from 'react-redux'
 import {
@@ -63,6 +63,8 @@ const DetailsBlog = ({ updateLike, removeBlog }) => {
       {clickedBlog.user === null ?'':<p>added by {clickedBlog.user.username }</p>}
       <br></br>
       {loggedInUser=== clickedBlog.user.username && <button id = "button-remove" onClick = {handleRemove}>remove</button>}
+
+      <Comments id = {clickedBlog.id}></Comments>
     </div>
 
   )

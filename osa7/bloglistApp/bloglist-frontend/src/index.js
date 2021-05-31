@@ -8,6 +8,7 @@ import blogReducer from './reducers/blogReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import userReducer from './reducers/userReducer'
 import allUsersReducer from './reducers/allUsersReducers'
+import commentReducer from './reducers/commentReducer'
 import thunk from 'redux-thunk'
 
 
@@ -17,7 +18,8 @@ const reducer = combineReducers({
   notification : notificationReducer,
   blogs: blogReducer,
   user: userReducer,
-  users : allUsersReducer
+  users : allUsersReducer,
+  comments: commentReducer
 })
 
 const store = createStore(reducer, composeWithDevTools(

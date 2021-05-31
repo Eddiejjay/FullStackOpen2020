@@ -17,6 +17,7 @@ import {
   BrowserRouter as Router, Route, Switch
 } from 'react-router-dom'
 import DetailsBlog from './components/DetailsBlog'
+import { initializeComments } from './reducers/commentReducer'
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs()),
     dispatch(initializeUsers())
+    dispatch(initializeComments())
 
   }, [dispatch])
 

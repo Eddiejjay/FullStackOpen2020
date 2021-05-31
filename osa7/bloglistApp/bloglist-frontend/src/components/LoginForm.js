@@ -23,7 +23,7 @@ const LoginForm = () => {
 
       const jee = dispatch(InitializeUser(credentials))
       console.log('jee jeee on', jee)
-      dispatch(createNotification(`Hello ${jee.username} have a nice day!`),console.log('opersee'))
+      dispatch(createNotification(`Hello ${username} have a nice day!`),console.log('opersee'))
       console.log('perseee')
 
 

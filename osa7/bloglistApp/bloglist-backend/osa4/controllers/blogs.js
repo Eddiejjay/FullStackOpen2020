@@ -3,6 +3,7 @@ const { result } = require('lodash')
 const Blog = require ('../models/blog')
 const jwt = require('jsonwebtoken')
 const User = require ('../models/user')
+const Comment = require ('../models/comment')
 const middleware = require ('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
@@ -10,8 +11,33 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs.map(blog => blog.toJSON()))
 
 })
+////////////////Kommentti osuus ////////////////////////////////////////// 
+blogsRouter.post('/:id/comments',  async (request, response) => {
+  const id = request.params.id
+  const body = request.body
 
+  if (body.comment === undefined) {
+    response.status(400).json()
+  }else {
+    const comment = new Comment( {comment : body.comment,
+      blog : id })
+    const savedComment = await comment.save()
+    console.log(comment)
+    response.status(201).json(savedComment)
+  
 
+  }})
+  
+blogsRouter.get('/comments',  async (request, response) => {
+  
+  const comments = await Comment.find({}).populate('blog' ,{title: 1, author: 1})
+  response.json(comments.map(comment => comment.toJSON()))
+  
+  
+   
+})
+
+/////////////////////////////////////////////////////////////////////////////////////
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const body = request.body
   const user = request.user
@@ -44,6 +70,22 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   }
 
 })
+
+blogsRouter.delete('/:id' ,middleware.userExtractor, async ( request, response) => {
+  const id = request.params.id
+  const blogToDelete = await Blog.findById(id)
+  const user = request.user
+
+
+  if (!(user.id.toString() === blogToDelete.user.toString())) {
+    return response.status(401).json({ error: 'invalid token' })
+  } else {
+    await Blog.findByIdAndRemove(id)
+    response.status(204).end()
+  }
+})
+
+  
 
 blogsRouter.delete('/:id' ,middleware.userExtractor, async ( request, response) => {
   const id = request.params.id
