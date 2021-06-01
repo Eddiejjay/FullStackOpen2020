@@ -1,12 +1,8 @@
 /* eslint-disable no-case-declarations */
-// export const initializeBlogs = (blogs) => {
-//   return {
-//     type: 'INITBLOGS',
-//     blogs : blogs
-//   }
-// }
+
 
 import blogsService from '../services/blogs'
+
 
 export const initializeBlogs = () => {
   return async dispatch => {
@@ -28,12 +24,20 @@ export const addLikeToStore = ( id ) => {
   }
 }
 
-export const addNewBlogStore = ( blog ) => {
-  return {
-    type: 'NEWBLOG',
-    blog : blog
-  }
-}
+export const addNewBlogStore = ( blog, user) => {
+  return async dispatch => {
+
+    blogsService.setToken(user.token)
+    const newBlog =  await blogsService.create(blog)
+    // blogFormRef.current.toggleVisibility()
+    dispatch({
+      type:'NEWBLOG',
+      blog : newBlog
+    })
+
+
+  }}
+
 export const deleteBlog = ( id ) => {
   return {
     type: 'DELETEBLOG',

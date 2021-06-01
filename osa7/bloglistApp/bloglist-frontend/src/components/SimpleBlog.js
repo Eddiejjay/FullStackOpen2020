@@ -27,8 +27,6 @@ const  SimpleBlog = ({ blog }) => {
 
 SimpleBlog.propTypes = {
 
-  blog: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
-
+  blog: PropTypes.object.isRequired
 }
 export default SimpleBlog

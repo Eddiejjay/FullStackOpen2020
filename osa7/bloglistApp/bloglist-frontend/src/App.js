@@ -29,7 +29,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs()),
-    dispatch(initializeUsers())
+    dispatch(initializeUsers()),
     dispatch(initializeComments())
 
   }, [dispatch])
@@ -44,19 +44,19 @@ const App = () => {
 
 
 
-  const createBlog = async (blogObject) => {
+  // const createBlog = async (blogObject) => {
 
-    try {
-      blogService.setToken(user.token)
-      await blogService.create(blogObject)
-      blogFormRef.current.toggleVisibility()
+  //   try {
+  //     blogService.setToken(user.token)
+  //     await blogService.create(blogObject)
+  //     blogFormRef.current.toggleVisibility()
 
-    }catch(error) {
-      console.log('käm,mmmmi')
-      console.log(error)
+  //   }catch(error) {
+  //     console.log('käm,mmmmi')
+  //     console.log(error)
 
-    }
-  }
+  //   }
+  // }
 
   const updateLike = async (blogObject, id) => {
     try {
@@ -100,7 +100,7 @@ const App = () => {
   const blogForm = () =>
     (
       <Togglable buttonLabel = "create blog" ref = {blogFormRef}>
-        <BlogForm createBlog = {createBlog}/>
+        <BlogForm />
 
       </Togglable>
 
