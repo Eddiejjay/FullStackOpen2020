@@ -4,6 +4,18 @@ import PropTypes from 'prop-types'
 import {
   Link
 } from 'react-router-dom'
+import styled from 'styled-components'
+
+
+const Styled = styled.div`
+font-family: cursive;
+color: black;
+background: BurlyWood;
+border-style: dotted;
+padding: 12px;
+margin:12px
+`
+
 
 // const blogStyle = {
 //   paddingTop: 10,
@@ -19,10 +31,11 @@ const  SimpleBlog = ({ blog }) => {
 
   return (
 
-
-    <Link to = {`/blogs/${blog.id}`}>
-      {blog.title} {blog.author}
-    </Link>
+    <Styled>
+      <Link to = {`/blogs/${blog.id}`}>
+        {blog.title} {blog.author}
+      </Link>
+    </Styled>
   ) }
 
 SimpleBlog.propTypes = {

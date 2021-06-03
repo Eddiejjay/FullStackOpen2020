@@ -1,6 +1,20 @@
 import React, { useState  } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addComment } from '../reducers/commentReducer'
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: Bisque;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Chocolate;
+  border-radius: 3px;
+`
+const Layout = styled.section`
+background: blue;
+
+`
 
 
 const Comments = ({ id }) => {
@@ -25,7 +39,7 @@ const Comments = ({ id }) => {
   }
 
   return(
-    <div>
+    <Layout>
       <form onSubmit = {addNewComment}>
         <div>
           <input
@@ -35,7 +49,7 @@ const Comments = ({ id }) => {
             name = "comment"
             onChange = {({ target }) => setCommentToAdd(target.value)}
           />
-          <button id = "add-comment" type="submit" >add comment</button>
+          <Button id = "add-comment" type="submit" >add comment</Button>
         </div>
 
 
@@ -45,7 +59,7 @@ const Comments = ({ id }) => {
         {blogsComments.map(comment => <li key = {comment.id}> {comment.comment} </li>)}
       </ul>
 
-    </div>
+    </Layout>
   )
 }
 

@@ -3,8 +3,13 @@ import React, { useState, useRef } from 'react'
 import { createNotification } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { addNewBlogStore } from '../reducers/blogReducer'
+import styled from 'styled-components'
 
-
+const StyledInput = styled.input `
+margin : 5px;
+background: rgb(255,0,0);
+border: solid 5px;
+`
 const BlogForm = () => {
   const dispatch = useDispatch()
   const blogFormRef = useRef()
@@ -42,15 +47,15 @@ const BlogForm = () => {
       <h2>create new</h2>
       <form onSubmit = {addBlog}>
         <div> title:
-          <input
+          <StyledInput
             id='title'
             type = "text"
             value = {title}
             name = "Title"
             onChange = {({ target }) => setTitle(target.value)}
-          /> </div>
+          />  </div>
         <div> author:
-          <input
+          <StyledInput
             id='author'
             type = "text"
             value = {author}
@@ -59,7 +64,7 @@ const BlogForm = () => {
           />
         </div>
         <div> url:
-          <input
+          <StyledInput
             id='url'
             type = "text"
             value = {url}

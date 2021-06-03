@@ -19,6 +19,18 @@ import {
 import DetailsBlog from './components/DetailsBlog'
 import { initializeComments } from './reducers/commentReducer'
 
+import styled from 'styled-components'
+
+const Scene = styled.div `
+background: yellow;
+paddingLeft: 20;
+border-style: groove;
+border-color: blue; 
+border-width: 12px;
+margin-left: 50x;
+margin-right: 60px;
+
+`
 
 const App = () => {
   const dispatch = useDispatch()
@@ -137,13 +149,12 @@ const App = () => {
   )
 
   return (
-
-    <div>
+    <Scene>
       {user === null && storeNotification !== '' && <Notification  message ={storeNotification}/>}
       {user=== null && <LoginForm ></LoginForm>}
       {/* {user !== null &&  <p> {user.name} logged in </p>} */}
       {user !== null && loggedInShow()}
-    </div>
+    </Scene>
   )
 }
 export default App
