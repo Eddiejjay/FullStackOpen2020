@@ -1,0 +1,50 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are grat",
+      "id": 1
+    },
+    {
+      "content": "the best featrure ever <3",
+      "id": 2
+    },
+    {
+      "content": "perse",
+      "id": 3
+    },
+    {
+      "content": "perse",
+      "id": 4
+    },
+    {
+      "content": "jormanen",
+      "id": 5
+    },
+    {
+      "content": "jormanen",
+      "id": 6
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "kaltsoon",
+      "number": "045-2323456",
+      "id": 2
+    },
+    {
+      "name": "Jaajo ",
+      "number": "Kajanene",
+      "id": 3
+    },
+    {
+      "name": "Jaajo heittiö ",
+      "number": "04077300923",
+      "id": 4
+    }
+  ]
+}
