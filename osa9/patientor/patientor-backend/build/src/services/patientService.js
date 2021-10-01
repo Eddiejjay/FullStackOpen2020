@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const patients_json_1 = __importDefault(require("../../data/patients.json"));
+const patients_1 = __importDefault(require("../../data/patients"));
 const uuid_1 = require("uuid");
-const patients = patients_json_1.default;
+const patients = patients_1.default;
 const getPatients = () => {
     return patients.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
         id,
@@ -18,6 +18,7 @@ const getPatients = () => {
 };
 const getPatientById = (id) => {
     const patient = patients.find(p => p.id === id);
+    console.log('patient', patient);
     return patient;
 };
 const addPatient = (patient) => {

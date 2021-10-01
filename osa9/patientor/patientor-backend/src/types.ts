@@ -11,9 +11,11 @@ export interface Diagnosis {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface Entry {
-  }
-
+  export type Entry =
+    | OccupationalHelathCareEntry
+    | HospitalEntry
+    | HealthCheck
+  ;
   export interface Patient {
     id: string;
     name: string;
@@ -33,3 +35,41 @@ export interface Diagnosis {
    ssn?: unknown,
    dateOfBirth?: unknown
   };
+interface BaseEntry {
+    id: string;
+    date: string;
+    specialist: string;
+    diagnosisCodes?: Array<Diagnosis['code']>;
+    description: string;
+}
+  export interface OccupationalHelathCareEntry extends BaseEntry {
+    type: 'OccupationalHealthcare'
+    employerName: string;
+    sickLeave?:{
+      startDate: string,
+      endDate: string}
+
+  }
+
+  export  interface HospitalEntry extends BaseEntry{
+  type: 'Hospital'
+    discharge: {
+      date: string;
+      criteria: string;
+
+    };
+  }
+
+  export interface HealthCheck extends BaseEntry {
+    type: 'HealthCheck';
+    healthCheckRating: HealthCheckRating;
+
+}
+
+
+  export enum HealthCheckRating {
+    "Healthy" = 0,
+    "LowRisk" = 1,
+    "HighRisk" = 2,
+    "CriticalRisk" = 3
+  }
