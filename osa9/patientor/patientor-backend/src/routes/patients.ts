@@ -8,8 +8,6 @@ import { NewEntry } from '../types';
 
 const router = express.Router();
 
-
-
 router.get('/', (_req, res) => {
 
 res.send(patientService.getPatients());
@@ -42,10 +40,8 @@ router.post('/', (req, res) => {
 
 });
 
-
 router.post('/:id/entries', (req, res) => {
   try {
-    console.log('perse');
   const id:string = req.params.id;
   const newEntry: NewEntry = toNewEntry(req.body);
   const addedEntry = entryService.addEntry(id, newEntry);

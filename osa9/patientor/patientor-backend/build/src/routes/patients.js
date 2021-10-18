@@ -53,7 +53,6 @@ router.post('/', (req, res) => {
 });
 router.post('/:id/entries', (req, res) => {
     try {
-        console.log('perse');
         const id = req.params.id;
         const newEntry = (0, utils_1.toNewEntry)(req.body);
         const addedEntry = entryService_1.default.addEntry(id, newEntry);
