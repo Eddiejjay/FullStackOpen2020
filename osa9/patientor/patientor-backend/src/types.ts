@@ -16,6 +16,9 @@ export interface Diagnosis {
     | HospitalEntry
     | HealthCheck
   ;
+
+  export type NewEntry = Omit<Entry, 'id'>;
+  
   export interface Patient {
     id: string;
     name: string;
@@ -73,3 +76,15 @@ interface BaseEntry {
     "HighRisk" = 2,
     "CriticalRisk" = 3
   }
+
+  export enum EntryType {
+    Hospital = 'Hospital',
+    OccupationalHealthcare = 'OccupationalHealthcare',
+    HealthCheck = 'HealthCheck'
+  }
+
+export type NewHospitalEntry = Omit<HospitalEntry, 'id'>;
+
+export type NewOccupationalHealthcareEntry = Omit<OccupationalHelathCareEntry , 'id'>;
+
+export type NewHealthCheckEntry = Omit<HealthCheck, 'id'>;

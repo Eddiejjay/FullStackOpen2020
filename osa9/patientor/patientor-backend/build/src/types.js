@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HealthCheckRating = exports.Gender = void 0;
+exports.EntryType = exports.HealthCheckRating = exports.Gender = void 0;
 var Gender;
 (function (Gender) {
     Gender["Male"] = "male";
@@ -14,3 +14,9 @@ var HealthCheckRating;
     HealthCheckRating[HealthCheckRating["HighRisk"] = 2] = "HighRisk";
     HealthCheckRating[HealthCheckRating["CriticalRisk"] = 3] = "CriticalRisk";
 })(HealthCheckRating = exports.HealthCheckRating || (exports.HealthCheckRating = {}));
+var EntryType;
+(function (EntryType) {
+    EntryType["Hospital"] = "Hospital";
+    EntryType["OccupationalHealthcare"] = "OccupationalHealthcare";
+    EntryType["HealthCheck"] = "HealthCheck";
+})(EntryType = exports.EntryType || (exports.EntryType = {}));
