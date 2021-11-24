@@ -91,7 +91,7 @@ const resolvers = {
     return authors.length},
     
     allBooks: async (root, args) => {
-      const books = await Book.find({})
+      const books = await Book.find({}).populate('author', { name: 1, born: 1 })
       if (args.author && !args.genre) 
         return books.filter(book => book.author.name === args.author)
       if (args.genre && !args.author)
@@ -137,13 +137,18 @@ const resolvers = {
         })
       })
   },
+
+  
   addBook: async (root, args, { currentUser }) => {
+
     if (!currentUser) {
       throw new AuthenticationError("not authenticated")
     }
+    
     const auth = await Author.findOne({ name: args.author })
     if (!auth) {
       const newAuthor = new Author({name: args.author, born:null})
+      
       try {
         await newAuthor.save()
       } catch (error) {
@@ -151,15 +156,11 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      const book = new Book({ ...args, author: newAuthor.id, id: uuid() })
-      try {
-        await book.save()
-      } catch (error) {
-        throw new UserInputError(error.message, {
-          invalidArgs: args,
-        })
-      }
-      return book
+
+      const book = new Book({ ...args, author: newAuthor._id, id: uuid() })
+       await book.save()
+       return book.populate('author', { name: 1, born: 1 })
+       
     } else {
        const book = new Book({ ...args, author:auth.id, id: uuid() })
        try {
@@ -169,10 +170,10 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-    return book
+    return book.populate('author', { name: 1, born: 1 })
   }},
 
-  editAuthor : async (root, args, { currentUser }) => {
+  editAuthor : async (root, args, { currentUser}) => {
     if (!currentUser) {
       throw new AuthenticationError("not authenticated")
     }
