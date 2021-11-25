@@ -1,5 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server')
 const { v1: uuid } = require('uuid')
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 const mongoose = require('mongoose')
 
 const Author = require('./models/Author')
@@ -20,13 +22,13 @@ mongoose.connect(MONGODB_URI)
     console.log('error connection to MongoDB:', error.message)
   })
 
-const typeDefs = gql`
+
+const typeDefs = gql`      
 type User {
   username: String!
   favoriteGenre: String!
   id: ID!
 }
-
 type Token {
   value: String!
 }
@@ -37,13 +39,11 @@ type Book {
   genres: [String!]!
   id: ID!
 }
-
   type Author {
     name: String!
     bookCount: Int
     born:Int
   }
-
   type Query {
     me: User
     bookCount: Int!
@@ -51,7 +51,6 @@ type Book {
     allBooks(author: String, genre: String):[Book!]!
     allAuthors:[Author]
   }
-
   type Mutation {
     createUser(
       username: String!
@@ -72,7 +71,9 @@ type Book {
       setBornTo:Int
     ):Author
   }
-
+  type Subscription {
+    bookAdded: Book!
+  }
 `
 
 
@@ -159,12 +160,14 @@ const resolvers = {
 
       const book = new Book({ ...args, author: newAuthor._id, id: uuid() })
        await book.save()
+       pubsub.publish('BOOK_ADDED', { bookAdded: book })
        return book.populate('author', { name: 1, born: 1 })
        
     } else {
        const book = new Book({ ...args, author:auth.id, id: uuid() })
        try {
         await book.save()
+        pubsub.publish('BOOK_ADDED', { bookAdded: book })
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -189,8 +192,12 @@ const resolvers = {
     }
     return author
   }
-}
-}
+},
+Subscription: {
+  bookAdded: {
+    subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+  },
+}}
 
 
 const server = new ApolloServer({
@@ -214,6 +221,7 @@ const server = new ApolloServer({
 
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })
